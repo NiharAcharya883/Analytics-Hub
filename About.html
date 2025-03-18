@@ -1,0 +1,139 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+    }
+
+    .section {
+        width: 100%;
+        padding: 50px 10%;
+        background-color: #f9f9f9;
+        text-align: center;
+    }
+
+    .section:nth-child(even) {
+        background-color: #ffffff;
+    }
+
+    .section h2 {
+        font-size: 36px;
+        margin-bottom: 20px;
+        color: #333;
+    }
+
+    .section p {
+        font-size: 18px;
+        line-height: 1.8;
+        color: #555;
+        text-align: justify;
+    }
+
+    .team {
+        display: flex;
+        justify-content: center;
+        gap: 50px;
+        padding: 50px 10%;
+        background-color: #f9f9f9;
+    }
+
+    .team-member {
+        position: relative;
+        width: 320px;
+        height: 320px;
+        overflow: hidden;
+        border-radius: 10px;
+        transition: transform 0.3s;
+    }
+
+    .team-member img {
+        width: 100%;
+        height: 100%;
+        border-radius: 10px;
+        object-fit: cover;
+    }
+
+    .team-member:hover {
+        transform: scale(1.05);
+    }
+
+    .linkedin-logo {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        width: 40px;
+        height: 40px;
+        background: url('{{ url_for('static', filename='images/instagram.jpg') }}') no-repeat center;
+        background-size: cover;
+        opacity: 0;
+        transition: opacity 0.3s ease-in-out;
+    }
+
+    .team-member:hover .linkedin-logo {
+        opacity: 1;
+    }
+
+    .team-member h3 {
+        text-align: center;
+        margin-top: 15px;
+        font-size: 22px;
+        color: #333;
+    }
+</style>
+
+<div class="section">
+    <h2>The Story Thus Far</h2>
+    <p>
+        It all began in 2025 with a simple yet powerful idea: to revolutionize the way individuals and businesses analyze text using AI.
+        The digital world was becoming saturated with information, and making sense of vast amounts of text efficiently had become a challenge.
+        We saw an opportunity to bring AI-driven solutions to everyday problems—whether it was detecting fake news, summarizing lengthy documents,
+        translating languages, or analyzing sentiments with precision. With a small but dedicated team of visionaries, developers, and AI researchers,
+        we embarked on this journey to make AI-powered text processing accessible, accurate, and seamless.
+    </p>
+    <p>
+        Over time, our platform grew beyond just an idea. We built and fine-tuned advanced AI models to cater to real-world needs, ensuring our tools were
+        not only fast but also intelligent. We collaborated with industry experts, worked closely with researchers, and continuously innovated to refine our
+        algorithms. Today, our analytics hub stands as a beacon of cutting-edge AI, empowering users worldwide with powerful text-processing tools that
+        redefine efficiency and accuracy in content analysis.
+    </p>
+</div>
+
+<div class="section">
+    <h2>Why We Are the Perfect Fit for Your Needs</h2>
+    <p>
+        Our platform is more than just a collection of tools—it’s an ecosystem designed to cater to a diverse range of needs. Whether you’re an academic,
+        a journalist, a content creator, or a business professional, we provide AI solutions that simplify your workflow and enhance productivity.
+        Our Fake News Detection tool ensures that you consume and share credible information, while our Plagiarism Detector helps maintain the integrity
+        of your content. The Sentiment Analysis tool provides deep insights into public opinion, and our Language Translator breaks down language barriers,
+        making global communication effortless. And when it comes to digesting lengthy documents, our AI-powered Summarization tool does the heavy lifting for you.
+    </p>
+    <p>
+        What sets us apart is our commitment to innovation and accuracy. Our models are continuously trained on the latest datasets, ensuring
+        state-of-the-art performance. We prioritize user experience, making our platform intuitive and easy to navigate. With data security at the
+        core of our operations, you can trust that your information remains confidential. Join thousands of users who have already embraced
+        AI-powered efficiency—experience the future of text analytics with us.
+    </p>
+</div>
+
+<div class="team">
+    <div class="team-member">
+        <img src="{{ url_for('static', filename='images/Image-1.jpeg') }}" alt="Founder 1">
+        <a href="https://linkedin.com/in/founder1" target="_blank" class="linkedin-logo"></a>
+        <h3>John Doe</h3>
+    </div>
+    <div class="team-member">
+        <img src="{{ url_for('static', filename='images/Image-1.jpeg') }}" alt="Founder 2">
+        <a href="https://linkedin.com/in/founder2" target="_blank" class="linkedin-logo"></a>
+        <h3>Jane Smith</h3>
+    </div>
+    <div class="team-member">
+        <img src="{{ url_for('static', filename='images/Image-1.jpeg') }}" alt="Founder 3">
+        <a href="https://linkedin.com/in/founder3" target="_blank" class="linkedin-logo"></a>
+        <h3>Alex Johnson</h3>
+    </div>
+</div>
+
+{% endblock %}

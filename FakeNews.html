@@ -1,0 +1,169 @@
+{% extends "base.html" %}
+
+{% block content %}
+<style>
+    /* News Detection Section */
+    .banner {
+        position: relative;
+        width: 100%;
+        height: 450px;
+        background: url("{{ url_for('static', filename='images/FakeNews.jpg') }}") no-repeat center center/cover;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        color: white;
+    }
+    .banner::before {
+        content: "";
+        position: absolute;
+        top: 0; left: 0; width: 100%; height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+    }
+    .banner h1, .banner p {
+        position: relative;
+        z-index: 1;
+    }
+.news-section {
+    text-align: center;
+    padding: 50px 20px;
+    background: #f4f4f4;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 60%;
+    margin: 50px auto;
+}
+
+.news-section h2 {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.news-section textarea {
+    width: 100%;
+    height: 200px;
+    border: 0.5px solid black;
+    border-radius: 15px;
+    padding: 10px;
+    font-size: 1rem;
+    outline: none;
+    resize: none;
+}
+
+.news-section button {
+    background: #8B4513;
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    font-size: 1.3rem;
+    cursor: pointer;
+    margin-top: 20px;
+    border-radius: 6px;
+    transition: background 0.3s;
+}
+
+.news-section button:hover {
+    background: #5D2E0F;
+}
+
+#resultText {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #222;
+    margin-top: 20px;
+}
+
+/* Alert Box */
+.alert-box {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(0, 0, 0, 0.9);
+    color: white;
+    padding: 20px 30px;
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0px 0px 15px rgba(255, 255, 255, 0.2);
+    min-width: 300px;
+    max-width: 400px;
+    z-index: 1000;
+}
+
+.alert-box button {
+    background: #ff4757;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    margin-top: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: 0.3s ease-in-out;
+}
+
+.alert-box button:hover {
+    background: #e84118;
+}
+</style>
+<!-- Banner Section -->
+<div class="banner">
+    <div>
+        <h1 style="font-size: 100px; font-weight: bold;">Fake News Detection</h1>
+        <p style="font-size: 24px;width:90%;margin:auto;">Ensure the credibility of news articles with our advanced AI-powered Fake News Detection tool, designed to help you distinguish between real and fake news with high accuracy.</p>
+    </div>
+</div>
+<section class="news-section">
+    <h2>Enter News</h2>
+    <textarea id="newsInput" placeholder="Type or paste the news article here..."></textarea>
+    <button onclick="checkNews()">Check News</button>
+    <p id="resultText"></p>
+</section>
+
+<!-- Alert Box -->
+<div id="customAlert" class="alert-box">
+    <p id="alertMessage"></p>
+    <button onclick="closeAlert()">OK</button>
+</div>
+
+<script>
+function showAlert(message) {
+    document.getElementById("alertMessage").innerText = message;
+    document.getElementById("customAlert").style.display = "block";
+}
+
+function closeAlert() {
+    document.getElementById("customAlert").style.display = "none";
+}
+
+function checkNews() {
+    let newsText = document.getElementById("newsInput").value.trim();
+
+    if (!newsText) {
+        showAlert("Please enter News to check.");
+        return;
+    }
+
+    fetch("/fake-news", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: "news_text=" + encodeURIComponent(newsText)
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.error) {
+            showAlert(data.error);
+        } else {
+            document.getElementById("resultText").innerText = "This is " + data.result;
+        }
+    })
+    .catch(error => {
+        showAlert("Error checking news. Please try again.");
+    });
+}
+</script>
+
+{% endblock %}

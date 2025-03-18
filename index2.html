@@ -1,0 +1,329 @@
+{% extends "base.html" %}
+    {% block title %}Analytics Hub{% endblock %}
+
+    {% block styles %}
+    <style>
+       
+        
+        .welcome-section {
+            text-align: center;
+            padding: 120px 20px 50px;
+            font-size: 1.5em;
+            width: 95%;
+            margin: auto;
+        }
+        .welcome h1{
+            font-size:2.3rem;
+        }
+        .welcome-section p{
+            width:85%;
+            margin:auto;
+        }
+        .carousel-container {
+            width: 100%;
+            overflow: hidden;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            margin: 40px 0;
+        }
+        .carousel {
+            display: flex;
+            width: calc(350px * 12);
+            animation: slide 10s linear infinite;
+        }
+        .carousel-container:nth-of-type(2) .carousel {
+            animation: slide-reverse 10s linear infinite;
+        }
+        .carousel img {
+            width: 350px;
+            height: 350px;
+            border-radius: 10px;
+            margin-right: 10px;
+        }
+        @keyframes slide {
+            0% { transform: translateX(0%); }
+            100% { transform: translateX(-50%); }
+        }
+        @keyframes slide-reverse {
+            0% { transform: translateX(-50%); }
+            100% { transform: translateX(0%); }
+        }
+        .ai-tools {
+            text-align: center;
+            margin: 40px auto;
+            padding: 20px;
+            max-width: 100%;
+        }
+        .ai-tools h2 {
+            font-size: 2.5em;
+        }
+        .tools-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 40px; /* Space between rows */
+            margin: 20px;
+        }
+        
+        .tools-row {
+            display: flex;
+            justify-content: center;
+            gap: 30px; /* Equal space between tools */
+            width: 100%;
+        }
+        .tool {
+            background: #f9f9f9;
+            padding: 30px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        .tool img {
+            width: 400px;
+            height: 400px;
+            border-radius: 10px;
+        }
+        .try-now {
+            display: inline-block;
+            padding: 10px 20px;
+            font-size: 1.7em;
+            color: red;
+            border-radius: 20px;
+            border:2px solid white;
+            background-color: white;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .try-now:hover {
+            background-color: red;
+            color: white;
+        }
+        /* Testimonials Section */
+.testimonials {
+    text-align: center;
+    padding: 60px 20px;
+    background: #f8f9fa;
+}
+
+.testimonials h2 {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.testimonial-intro {
+    font-size: 1.2rem;
+    color: #555;
+    margin-bottom: 40px;
+}
+
+.testimonial-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 30px;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.testimonial {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease-in-out;
+}
+
+.testimonial:hover {
+    transform: translateY(-5px);
+}
+
+.testimonial-text {
+    font-size: 1rem;
+    color: #444;
+    line-height: 1.5;
+    margin-bottom: 15px;
+}
+
+.testimonial-author {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.testimonial-author img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #007bff;
+}
+
+.author-info h3 {
+    font-size: 1.1rem;
+    margin: 0;
+    color: #222;
+}
+
+.author-info p {
+    font-size: 0.9rem;
+    color: #666;
+}
+
+        .locations {
+            text-align: center;
+            margin: 50px auto;
+            padding: 20px;
+        }
+        .locations-container {
+            margin-top:30px;
+            display: flex;
+            justify-content: center;
+            gap: 200px;
+        }
+        .location img {
+            width: 450px;
+            height: 400px;
+            border-radius: 10px;
+        }
+    </style>
+    {% endblock %}
+    
+    {% block content %}
+    <div class="welcome-section">
+        <h1>Welcome to Analytics Hub</h1>
+        <p>Welcome to Analytics Hub – your ultimate AI-powered text processing platform! Our cutting-edge tools help you translate languages, detect plagiarism, verify news authenticity, analyze sentiment, and summarize content effortlessly. Whether you're a researcher, student, or business professional, Analytics Hub provides fast, accurate, and free AI tools to streamline your workflow.</p>
+    </div>
+
+    <div class="carousel-container">
+        <div class="carousel">
+            <img src="static/images/Image-1.jpeg">
+            <img src="static/images/Image-2.jpeg">
+            <img src="static/images/Image-3.jpeg">
+            <img src="static/images/Image-4.jpeg">
+            <img src="static/images/Image-5.jpeg">
+            <img src="static/images/Image-6.jpeg">
+        </div>
+    </div>
+
+    <div class="carousel-container">
+        <div class="carousel">
+            <img src="static/images/Image-7.jpeg">
+            <img src="static/images/Image-8.jpeg">
+            <img src="static/images/Image-9.jpeg">
+            <img src="static/images/Image-10.jpeg">
+            <img src="static/images/Image-11.jpeg">
+            <img src="static/images/Image-12.jpeg">
+        </div>
+    </div>
+
+    <div class="ai-tools">
+        <h2>AI TOOLS</h2>
+        <div class="tools-container">
+            <div class="tools-row">
+                <div class="tool">
+                    <img src="static/images/Fake_News_Detector.jpg">  
+                    <h2>Fake News Detector</h2>
+                    <p>Detect and filter out fake news articles using advanced algorithms.</p>
+                    <a href="{{ url_for('fake_news') }}">
+                        <button class="try-now">Try Now ></button>
+                    </a>
+                </div>
+                <div class="tool">
+                    <img src="static/images/Content_Plagiarism_Detector.jpg">
+                    <h2>Plagiarism Detector</h2>
+                    <p>Check the originality of your content and identify any instances of plagiarism.</p>
+                    <a href="{{ url_for('plagiarism') }}">
+                        <button class="try-now">Try Now ></button>
+                    </a>
+                </div>
+                <div class="tool">
+                    <img src="static/images/Language_Translator.jpg">
+                    <h2>Language Translator</h2>
+                    <p>Translate text instantly into multiple languages with high accuracy.</p>
+                    <a href="{{ url_for('translator_page') }}">
+                        <button class="try-now">Try Now ></button>
+                    </a>
+                    
+                </div>
+            </div>
+            <div class="tools-row">
+                <div class="tool">
+                    <img src="static/images/Text_Summarization.jpg">
+                    <h2>Text Summarizer</h2>
+                    <p>Quickly condense lengthy texts into clear, concise summaries with precision.</p>
+                    <button class="try-now">Try Now ></button>
+                </div>
+                <div class="tool">
+                    <img src="static/images/Sentiment_Analysis.jpg">
+                    <h2>Sentiment Analysis</h2>
+                    <p>Analyze the sentiment behind text to understand emotions and opinions.</p>
+                    <button class="try-now">Try Now ></button>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+    <section class="testimonials">
+        <h2>Testimonials</h2>
+        <p class="testimonial-intro">Read what our users have to say about their experience with our AI tools.</p>
+        
+        <div class="testimonial-container">
+            <div class="testimonial">
+                <p class="testimonial-text">"I have been using the Language Translator tool for my business communications, and it has been a game-changer. Highly recommended!"</p>
+                <div class="testimonial-author">
+                    <div class="author-info">
+                        <h3>John Doe</h3>
+                        <p>CEO, Company ABC</p>
+                    </div>
+                </div>
+            </div>
+    
+            <div class="testimonial">
+                <p class="testimonial-text">"The Sentiment Analysis tool helped us understand customer feedback better and improve our products. Thank you for this amazing tool!"</p>
+                <div class="testimonial-author">
+                    <div class="author-info">
+                        <h3>Jane Smith</h3>
+                        <p>Marketing Manager, XYZ Inc.</p>
+                    </div>
+                </div>
+            </div>
+    
+            <div class="testimonial">
+                <p class="testimonial-text">"The Plagiarism Detector saved us from unintentional plagiarism in our research papers. It's a must-have tool for every student and researcher."</p>
+                <div class="testimonial-author">
+                    <div class="author-info">
+                        <h3>David Johnson</h3>
+                        <p>Founder, Startup123</p>
+                    </div>
+                </div>
+            </div>
+    
+            <div class="testimonial">
+                <p class="testimonial-text">"As a journalist, the Fake News Detector tool has been invaluable in verifying sources and ensuring the credibility of the news articles we publish."</p>
+                <div class="testimonial-author">
+                    <div class="author-info">
+                        <h3>Sarah Williams</h3>
+                        <p>Journalist, News Today</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+
+    <div class="locations">
+        <h1>OUR LOCATIONS</h1>
+        <div class="locations-container">
+            <div class="location"><img src="static/images/ahmedabad.jpg"><h2>Ahmedabad</h2>
+                <p>Ahmedabad Branch – 456 AI Avenue, Ahmedabad, India</p>
+            </div>
+            <div class="location"><img src="static/images/gandhinagar.jpg"><h2>Gandhinagar</h2>
+            <p>Gandhinagar Branch – 789 Tech Street, Gandhinagar, India</p>
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}

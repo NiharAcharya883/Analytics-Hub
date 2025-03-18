@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}My Website{% endblock %}</title>
+    
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            background: none;
+        }
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 25px 0;
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            background: white;
+        }
+        .navbar {
+            display: flex;
+            gap: 30px;
+            padding-left: 20px;
+        }
+        .navbar a {
+            color: black;
+            text-decoration: none;
+            font-size: 24px;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+        .navbar a:hover {
+            color: #ff0000;
+        }
+        /* Footer Styling */
+            .footer {
+                background: #2c2c2c;
+                color: white;
+                padding: 40px 0;
+                font-family: 'Arial', sans-serif;
+            }
+        
+            .footer-container {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: space-between;
+                max-width: 1200px;
+                margin: auto;
+                padding: 0 20px;
+            }
+        
+            .footer-logo {
+                flex: 1 1 250px;
+                max-width: 300px;
+            }
+        
+            .footer-logo img {
+                max-width: 180px;
+                margin-bottom: 10px;
+            }
+        
+            .footer-logo p {
+                font-size: 14px;
+                line-height: 1.5;
+            }
+        
+            .footer-links, .footer-support, .footer-social {
+                flex: 1 1 200px;
+                text-align: left;
+            }
+        
+            .footer-links h3, .footer-support h3, .footer-social h3 {
+                font-size: 18px;
+                margin-bottom: 15px;
+                border-bottom: 2px solid #ff9800;
+                display: inline-block;
+                padding-bottom: 5px;
+            }
+        
+            .footer-links ul, .footer-support ul {
+                list-style: none;
+                padding: 0;
+            }
+        
+            .footer-links ul li, .footer-support ul li {
+                margin-bottom: 10px;
+            }
+        
+            .footer-links ul li a, .footer-support ul li a {
+                color: white;
+                text-decoration: none;
+                font-size: 14px;
+                transition: 0.3s;
+            }
+        
+            .footer-links ul li a:hover, .footer-support ul li a:hover {
+                color: #ff9800;
+                text-decoration: underline;
+            }
+        
+            .footer-social a {
+                display: flex;
+                align-items: center;
+                color: white;
+                text-decoration: none;
+                font-size: 14px;
+                margin-bottom: 10px;
+                transition: 0.3s;
+            }
+        
+            .footer-social a img {
+                width: 24px;
+                margin-right: 8px;
+            }
+        
+            .footer-social a:hover {
+                color: #ff9800;
+            }
+        
+            .footer-certification {
+                flex: 1 1 150px;
+                text-align: center;
+            }
+        
+            .footer-certification img {
+                max-width: 120px;
+            }
+        
+            .footer-bottom {
+                height:25px;
+                text-align: center;
+                padding-top: 5px;
+                font-size: 20px;
+                border-top: 1px solid #444;
+                margin-top: 10px;
+            }
+        
+            /* Responsive Design */
+            @media (max-width: 768px) {
+                .footer-container {
+                    flex-direction: column;
+                    text-align: center;
+                }
+        
+                .footer-logo, .footer-links, .footer-support, .footer-social, .footer-certification {
+                    margin-bottom: 20px;
+                }
+        
+                .footer-social a {
+                    justify-content: center;
+                }
+            }
+        
+        /* Ensure the footer pushes down */
+        html, body {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .content {
+            flex: 1; /* Pushes footer to the bottom */
+        }
+
+        /* Custom Alert Box */
+        .alert-box {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: linear-gradient(135deg, #ff4e50, #f9d423);
+            color: white;
+            padding: 15px 25px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 16px;
+            font-weight: bold;
+            z-index: 1000;
+            transition: transform 0.3s ease, opacity 0.3s ease;
+        }
+
+        .alert-box.hidden {
+            transform: translateY(-50px);
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .alert-box button {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 18px;
+            cursor: pointer;
+            padding-left: 10px;
+        }
+
+        .alert-box button:hover {
+            color: #222;
+        }
+    </style>
+    <!-- Allow child templates to add custom styles -->
+    {% block styles %}{% endblock %}
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <img src="{{ url_for('static', filename='images/Logo.jpg') }}" alt="Company Logo" style="width:50px;height:50px;">
+            <a href="{{ url_for('home') }}">Home</a>
+            <a href="{{ url_for('about') }}">About Us</a>
+            <a href="{{ url_for('contact') }}">Contact Us</a>
+        </nav>
+    </header>
+    
+    <div style="margin-top: 80px;"> 
+        {% block content %}{% endblock %}
+    </div>
+
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-logo">
+                <img src="{{ url_for('static', filename='images/Logo.jpg') }}" alt="Company Logo" style="height:70px;width:70px;">
+                <p><strong>Address:</strong> Indus University
+                    Rancharda, Via: Shilaj,
+                    Ahmedabad – 382 115.
+                    Gujarat, India.<br>
+                <strong>Phone:</strong> +91 9328732346</p>
+            </div>
+            
+            <div class="footer-links">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="#">About us</a></li>
+                    <li><a href="#">Language Translator</a></li>
+                    <li><a href="#">Text Summarization</a></li>
+                    <li><a href="#">Content Plagiarism</a></li>
+                    <li><a href="#">Fake News Detection</a></li>
+                    <li><a href="#">Sentiment Analysis</a></li>
+                </ul>
+            </div>
+            <div class="footer-support">
+                <h3>Support</h3>
+                <ul>
+                    <li><a href="#">Contact Us</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
+                </ul>
+            </div>
+
+
+            <!-- Custom Alert Box -->
+        <div id="custom-alert" class="alert-box hidden">
+            <p id="alert-message">This is an alert message!</p>
+            <button onclick="closeAlert()">✖</button>
+        </div>
+            
+
+
+            <div class="footer-social">
+                <h3>Connect With Us</h3>
+                <a href="https://www.linkedin.com" target="_blank">
+                    <img src="{{ url_for('static', filename='images/linkedin.png') }}" alt="LinkedIn"> LinkedIn
+                </a>
+                <a href="https://www.instagram.com" target="_blank">
+                    <img src="{{ url_for('static', filename='images/behance.png') }}" alt="Instagram"> Instagram
+                </a>
+            </div>
+            
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; Analytics Hub 2025 All Rights Reserved.</p>
+        </div>
+    </footer>
+    
+    <script>
+        function showAlert(message) {
+            document.getElementById('alert-message').textContent = message;
+            document.getElementById('custom-alert').classList.remove('hidden');
+        }
+
+        function closeAlert() {
+            document.getElementById('custom-alert').classList.add('hidden');
+        }
+    </script>
+
+
+    
+    
+</body>
+</html>

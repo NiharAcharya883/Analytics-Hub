@@ -1,0 +1,218 @@
+{% extends "base.html" %}
+
+{% block content %}
+<style>
+    .banner {
+        position: relative;
+        width: 100%;
+        height: 450px;
+        background: url("{{ url_for('static', filename='images/Plagiarism.jpg') }}") no-repeat center center/cover;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        color: white;
+    }
+    .banner::before {
+        content: "";
+        position: absolute;
+        top: 0; left: 0; width: 100%; height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+    }
+    .banner h1, .banner p {
+        position: relative;
+        z-index: 1;
+    }
+    .container {
+        width: 80%;
+        margin: 40px auto;
+        text-align: center;
+    }
+    .input-box {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 20px;
+        gap: 20px;
+    }
+    textarea {
+        width: 48%;
+        height: 230px;
+        padding: 10px;
+        font-size: 16px;
+        border: 1px solid #ccc;
+        border-radius: 10px;
+        box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+    }
+    .check-btn {
+        padding: 12px 24px;
+        font-size: 18px;
+        font-weight: bold;
+        color: white;
+        background-color: brown;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+    .check-btn:hover {
+        background-color: darkred;
+    }
+    .section-heading {
+        font-size: 42px;
+        font-weight: bold;
+        margin-bottom: 20px;
+    }
+    .file-upload-container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        gap: 20px;
+    }
+    .file-input {
+        padding: 12px;
+        font-size: 18px;
+        border: 2px dashed #aaa;
+        border-radius: 10px;
+        width: 50%;
+        text-align: center;
+        cursor: pointer;
+    }
+    /* Spinner Styling */
+    .spinner {
+        display: none;  /* Hide it initially */
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: rgba(255, 255, 255, 0.8); /* Optional: Light background */
+        padding: 20px;
+        border-radius: 10px;
+        z-index: 1000;
+    }
+    
+</style>
+
+<!-- Banner Section -->
+<div class="banner">
+    <div>
+        <h1 style="font-size: 100px; font-weight: bold;">Content Plagiarism Detector</h1>
+        <p style="font-size: 24px;">
+            Detect plagiarism in articles, essays, and reports using AI-based analysis.  
+            Input text manually or upload a document to check for duplicated content.
+        </p>
+    </div>
+</div>
+
+<!-- Text Input Section -->
+<div class="container">
+    <h2 style="font-size:40px; font-weight:bold;">Enter Content to Check for Plagiarism</h2>
+
+    <div class="input-box">
+        <textarea id="inputText" placeholder="Enter content here..."></textarea>
+        <textarea id="outputResult" placeholder="Plagiarism result will appear here..." readonly></textarea>
+    </div>
+
+    <button onclick="plagiarism()" class="check-btn">Check Plagiarism</button>
+</div>
+
+<!-- Spinner Element -->
+<div id="loadingSpinner" class="spinner">
+    <img src="{{ url_for('static', filename='spinner.gif') }}" alt="Loading...">
+</div>
+
+
+
+<!-- File Upload Section
+<div class="container">
+    <h2 class="section-heading">Or Upload a File for Plagiarism Check</h2>
+
+    <div class="file-upload-container">
+        <input type="file" id="fileInput" class="file-input">
+        <button onclick="PlagiarismFile()" class="check-btn">Analyze & Download Report</button>
+    </div>
+</div>
+-->
+<script>
+    function showCustomAlert(message, type = "error") {
+        console.log("ALERT TRIGGERED:", message); // Debugging Log
+        
+        let alertBox = document.getElementById("custom-alert");
+        let alertMessage = document.getElementById("alert-message");
+
+        if (alertBox && alertMessage) {
+            alertMessage.textContent = message;
+            alertBox.classList.remove("hidden");
+
+            // Change color based on type
+            if (type === "success") {
+                alertBox.style.backgroundColor = "green";
+            } else {
+                alertBox.style.backgroundColor = "red";
+            }
+
+            // Auto-close after 3 seconds
+            setTimeout(() => closeAlert(), 3000);
+        } else {
+            console.error("Custom alert elements not found in base.html!");
+        }
+    }
+
+    function closeAlert() {
+        let alertBox = document.getElementById("custom-alert");
+        if (alertBox) {
+            alertBox.classList.add("hidden");
+        }
+    }
+
+    function showLoadingSpinner() {
+        document.getElementById("loadingSpinner").style.display = "block"; // Show spinner
+    }
+    
+    function hideLoadingSpinner() {
+        document.getElementById("loadingSpinner").style.display = "none"; // Hide spinner
+    }
+    
+
+    function plagiarism() {
+        console.log("Checking plagiarism...");
+
+        let text = document.getElementById("inputText").value.trim();
+
+        if (!text) {
+            showCustomAlert("Please enter content to check plagiarism.");
+            return;
+        }
+
+        showLoadingSpinner();
+
+        fetch("/plagiarism", {
+            method: "POST",
+            headers: { "Content-Type": "application/x-www-form-urlencoded" },
+            body: `text=${encodeURIComponent(text)}`
+        })
+        .then(response => {
+            console.log("Response received:", response);
+            if (!response.ok) throw new Error("Server error. Please try again.");
+            return response.json();
+        })
+        .then(data => {
+            console.log("Plagiarism data:", data);
+            hideLoadingSpinner();
+
+            if (data.error) {
+                showCustomAlert(data.error);
+            } else {
+                document.getElementById("outputResult").value = JSON.stringify(data, null, 2);
+                showCustomAlert("Plagiarism check completed!", "success");
+            }
+        })
+        .catch(error => {
+            console.error("Error:", error);
+            hideLoadingSpinner();
+            showCustomAlert(error.message || "Plagiarism check failed! Please try again.");
+        });
+    }
+</script>
+
+{% endblock %}
