@@ -1,0 +1,442 @@
+{% extends "base.html" %}
+{% block content %}
+
+<!-- Banner Section -->
+<div class="banner">
+  <div>
+      <h1 style="font-size: 100px; font-weight: bold;">Sentiment Analysis</h1>
+      <p style="font-size: 24px;">Analyzes text data from a CSV file to generate a detailed, downloadable sentiment analysis report with visual insights.aries.</p>
+  </div>
+</div>
+
+<!-- Sentiment Tool Section -->
+<section class="tool-section">
+  <h1 class="tool-heading">Sentiment Analysis Tool</h1>
+
+  <form id="sentimentForm" enctype="multipart/form-data">
+    <!-- Upload CSV Button -->
+    <label class="file-upload">
+      <input type="file" id="csvFile" name="csv_file" accept=".csv" required hidden>
+      <span class="upload-btn">📤 Upload CSV File</span>
+    </label>
+    <p id="fileName" class="file-name-display"></p>
+
+    <!-- Column Dropdown -->
+    <div id="columnSelectContainer" class="column-select" style="display: none;">
+      <label for="textColumn">Select Text Column:</label>
+      <select name="text_column" id="textColumn" required></select>
+    </div>
+
+    <!-- Generate Button -->
+    <button type="submit" id="generateBtn" class="action-btn" style="display: none;">Generate Report</button>
+
+    <!-- Download Button -->
+    <button type="button" id="downloadBtn" class="action-btn" style="display: none;">Download Report</button>
+  </form>
+
+  <!-- Alert -->
+  <div id="customAlert" class="custom-alert" style="display: none;"></div>
+</section>
+
+<!-- Loading Overlay -->
+<div id="loadingOverlay" class="loading-overlay">
+  <div class="loading-content">
+    <div id="emojiPulse" class="emoji">🔍</div>
+    <p id="progressText" class="progress-message">Preparing...</p>
+  </div>
+</div>
+<section class="offer-section">
+  <h2>What we offer!</h2>
+  <div class="offer-container">
+      <div class="offer-box">
+          <div class="offer-content">
+              <h3>Dual Sentiment Models</h3>
+              <ul>
+                  <li>Binary classification: Positive or Negative sentiment.</li>
+                  <li>Emotion detection: Joy, Fear, Anger, Love, Sad, Surprise.</li>
+                  <li>Trained on movie reviews, customer feedback, and tweets.</li>
+                  <li>Robust performance on real-world text.</li>
+                  <li>Accurate predictions across multiple domains.</li>
+              </ul>
+          </div>
+      </div>
+
+      <div class="offer-box">
+          <div class="offer-content">
+              <h3>CSV File Upload</h3>
+              <ul>
+                  <li>Upload CSV files with thousands of text entries.</li>
+                  <li>Automatic column detection from your file.</li>
+                  <li>Select which column to analyze.</li>
+                  <li>Fast processing with intuitive interface.</li>
+                  <li>No data loss or format issues.</li>
+              </ul>
+          </div>
+      </div>
+
+      <div class="offer-box">
+          <div class="offer-content">
+              <h3>Detailed PDF Report</h3>
+              <ul>
+                  <li>Auto-generated analysis report in PDF format.</li>
+                  <li>Includes bar and pie charts of sentiments.</li>
+                  <li>Generates word clouds for better insight.</li>
+                  <li>Professionally formatted and downloadable.</li>
+                  <li>Perfect for presentations and research.</li>
+              </ul>
+          </div>
+      </div>
+
+      <div class="offer-box">
+          <div class="offer-content">
+              <h3>High Accuracy & Scalability</h3>
+              <ul>
+                  <li>Processes up to 1,000 rows per CSV.</li>
+                  <li>Works with customer reviews, feedback forms, tweets, etc.</li>
+                  <li>Optimized for both speed and performance.</li>
+                  <li>Supports long-form text and short snippets.</li>
+                  <li>Scales well for business and academic use.</li>
+              </ul>
+          </div>
+      </div>
+  </div>
+</section>
+
+
+<!-- Styles -->
+<style>
+  .offer-section {
+    text-align: center;
+    padding: 50px;
+    background-color: #f8f9fc;
+}
+
+.offer-section h2 {
+    font-size: 32px;
+    font-weight: bold;
+    margin-bottom: 30px;
+}
+
+.offer-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 40px;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.offer-box {
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease-in-out;
+}
+
+.offer-box:hover {
+    transform: translateY(-5px);
+}
+
+.offer-content h3 {
+    font-size: 22px;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+.offer-content ul {
+    list-style: none;
+    padding: 0;
+}
+
+.offer-content ul li {
+    font-size: 18px;
+    color: #333;
+    display: flex;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.offer-content ul li::before {
+    content: "✔";
+    color: #007bff;
+    font-weight: bold;
+    font-size: 20px;
+    margin-right: 12px;
+}
+
+  .banner {
+    position: relative;
+    width: 100%;
+    height: 450px;
+    background: url("{{ url_for('static', filename='images/Sentiment_analysis_banner.png') }}") no-repeat center center/cover;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: white;
+}
+.banner::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+}
+.banner h1, .banner p {
+    position: relative;
+    z-index: 1;
+}
+
+  .tool-section {
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 30px;
+    background: #ffffff;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+    border-radius: 12px;
+    text-align: center;
+  }
+
+  .tool-heading {
+    font-size: 2.2rem;
+    margin-bottom: 30px;
+    color: #111827;
+  }
+
+  .file-upload .upload-btn {
+    display: inline-block;
+    padding: 12px 25px;
+    background: #4f46e5;
+    color: white;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: background 0.3s ease;
+  }
+
+  .file-upload .upload-btn:hover {
+    background: #3730a3;
+  }
+
+  .file-name-display {
+    margin-top: 10px;
+    font-weight: 500;
+    color: #374151;
+  }
+
+  .column-select {
+    margin-top: 25px;
+    font-size: 16px;
+  }
+
+  .column-select label {
+    font-weight: 600;
+    margin-right: 10px;
+    color: #111827;
+  }
+
+  .column-select select {
+    padding: 8px 12px;
+    border-radius: 6px;
+    border: 1px solid #d1d5db;
+    font-size: 16px;
+  }
+
+  .action-btn {
+    display: inline-block;
+    margin-top: 30px;
+    padding: 12px 30px;
+    background-color: #10b981;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background 0.3s ease;
+  }
+
+  .action-btn:hover {
+    background-color: #059669;
+  }
+
+  .custom-alert {
+    margin-top: 20px;
+    padding: 10px 15px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 500;
+    text-align: center;
+  }
+
+  .loading-overlay {
+    display: none;
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(243, 244, 246, 0.95);
+    z-index: 9999;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+  }
+
+  .loading-content {
+    text-align: center;
+  }
+
+  .emoji {
+    font-size: 50px;
+    animation: pulse 1.2s infinite;
+  }
+
+  .progress-message {
+    margin-top: 20px;
+    font-size: 18px;
+    color: #4b5563;
+    font-weight: 500;
+  }
+
+  @keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.3); }
+  }
+</style>
+
+
+
+<script>
+  const form = document.getElementById("sentimentForm");
+  const fileInput = document.getElementById("csvFile");
+  const columnSelectContainer = document.getElementById("columnSelectContainer");
+  const textColumn = document.getElementById("textColumn");
+  const generateBtn = document.getElementById("generateBtn");
+  const downloadBtn = document.getElementById("downloadBtn");
+  const fileNameDisplay = document.getElementById("fileName");
+  const alertBox = document.getElementById("customAlert");
+
+  const overlay = document.getElementById("loadingOverlay");
+  const emojiPulse = document.getElementById("emojiPulse");
+  const progressText = document.getElementById("progressText");
+
+  const emojis = ["🧠", "📊", "📈", "📉", "📝"];
+  const messages = [
+    "Analyzing text...",
+    "Detecting emotions...",
+    "Generating insights...",
+    "Preparing your PDF report..."
+  ];
+
+  let emojiTimer, messageTimer;
+  let emojiIndex = 0, messageIndex = 0;
+
+  function showAlert(message, type = "error") {
+    alertBox.style.display = "block";
+    alertBox.innerText = message;
+    alertBox.style.backgroundColor = type === "error" ? "#ffe0e0" : "#e0ffe0";
+    alertBox.style.color = type === "error" ? "#a00" : "#0a0";
+    setTimeout(() => { alertBox.style.display = "none"; }, 5000);
+  }
+
+  fileInput.addEventListener("change", async () => {
+    const file = fileInput.files[0];
+    if (!file) return;
+
+    if (file.size > 10 * 1024 * 1024) {
+      showAlert("File too large. Max size is 10MB.");
+      fileInput.value = "";
+      return;
+    }
+
+    fileNameDisplay.textContent = `Selected File: ${file.name}`;
+
+    const formData = new FormData();
+    formData.append("csv_file", file);
+
+    try {
+      const response = await fetch("/get_csv_columns", {
+        method: "POST",
+        body: formData
+      });
+      const result = await response.json();
+
+      if (response.ok) {
+        textColumn.innerHTML = "";
+        result.forEach(col => {
+          const option = document.createElement("option");
+          option.value = col;
+          option.textContent = col;
+          textColumn.appendChild(option);
+        });
+
+        columnSelectContainer.style.display = "block";
+        generateBtn.style.display = "inline-block";
+        downloadBtn.style.display = "none";
+      } else {
+        showAlert("Error loading column names: " + result.error);
+      }
+    } catch (error) {
+      showAlert("Error loading file: " + error.message);
+    }
+  });
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    showLoading();
+
+    try {
+      const formData = new FormData(form);
+      const response = await fetch("/sentiment", {
+        method: "POST",
+        body: formData
+      });
+
+      if (response.ok) {
+        const blob = await response.blob();
+        const url = window.URL.createObjectURL(blob);
+
+        downloadBtn.style.display = "inline-block";
+        downloadBtn.onclick = () => {
+          const a = document.createElement("a");
+          a.href = url;
+          a.download = "sentiment_report.pdf";
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+        };
+      } else {
+        const err = await response.text();
+        showAlert("Failed to generate report:\n" + err);
+      }
+    } catch (err) {
+      showAlert("An error occurred: " + err.message);
+    } finally {
+      hideLoading();
+    }
+  });
+
+  function showLoading() {
+    overlay.style.display = "flex";
+    emojiIndex = 0;
+    messageIndex = 0;
+    emojiPulse.textContent = emojis[emojiIndex];
+    progressText.textContent = messages[messageIndex];
+
+    emojiTimer = setInterval(() => {
+      emojiIndex = (emojiIndex + 1) % emojis.length;
+      emojiPulse.textContent = emojis[emojiIndex];
+    }, 2000);
+
+    messageTimer = setInterval(() => {
+      messageIndex = (messageIndex + 1) % messages.length;
+      progressText.textContent = messages[messageIndex];
+    }, 3000);
+  }
+
+  function hideLoading() {
+    overlay.style.display = "none";
+    clearInterval(emojiTimer);
+    clearInterval(messageTimer);
+  }
+</script>
+{% endblock %}

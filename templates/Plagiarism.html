@@ -1,0 +1,353 @@
+{% extends "base.html" %}
+
+{% block content %}
+<style>
+    .banner {
+        position: relative;
+        width: 100%;
+        height: 450px;
+        background: url("{{ url_for('static', filename='images/Plagiarism.jpg') }}") no-repeat center center/cover;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        color: white;
+    }
+    .banner::before {
+        content: "";
+        position: absolute;
+        top: 0; left: 0; width: 100%; height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+    }
+    .banner h1, .banner p {
+        position: relative;
+        z-index: 1;
+    }
+    .container {
+        width: 80%;
+        margin: 40px auto;
+        text-align: center;
+    }
+    .input-box {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 20px;
+        gap: 20px;
+    }
+    textarea {
+        width: 48%;
+        height: 230px;
+        padding: 10px;
+        font-size: 16px;
+        border: 1px solid #ccc;
+        border-radius: 10px;
+        box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+    }
+    .check-btn {
+        padding: 12px 24px;
+        font-size: 18px;
+        font-weight: bold;
+        color: white;
+        background-color: #2C3539;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+    .check-btn:hover {
+        background-color: #696969;
+    }
+    .section-heading {
+        font-size: 42px;
+        font-weight: bold;
+        margin-bottom: 20px;
+    }
+    .file-upload-container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        gap: 20px;
+    }
+    .file-input {
+        padding: 12px;
+        font-size: 18px;
+        border: 2px dashed #aaa;
+        border-radius: 10px;
+        width: 50%;
+        text-align: center;
+        cursor: pointer;
+    }
+    /* Spinner Styling */
+    .spinner {
+        display: none;  /* Hide it initially */
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: rgba(255, 255, 255, 0.8); /* Optional: Light background */
+        padding: 20px;
+        border-radius: 10px;
+        z-index: 1000;
+    }
+
+    .plagiarism-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+    }
+    
+    .plagiarism-table th, .plagiarism-table td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: left;
+    }
+    
+    .plagiarism-table th {
+        background-color: #f4f4f4;
+        font-weight: bold;
+    }
+    
+    .plagiarism-table a {
+        color: #007bff;
+        text-decoration: none;
+    }
+    
+    .plagiarism-table a:hover {
+        text-decoration: underline;
+    }
+    .offer-section {
+        text-align: center;
+        padding: 60px 20px;
+        background: #f8f9fa;
+    }
+    
+    .offer-heading {
+        font-size: 36px;
+        font-weight: bold;
+        margin-bottom: 30px;
+        color: #333;
+    }
+    
+    .offer-container {
+        display: grid;
+        flex-wrap: wrap;
+        grid-template-columns: repeat(3, 1fr); /* 3 columns */
+        grid-template-rows: repeat(2, auto); /* 2 rows */
+        justify-content: center;
+        gap: 35px; /* Increased spacing */
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+    
+    .offer-box {
+        background: white;
+        padding: 30px;
+        border-radius: 12px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        width: 320px;
+        text-align: center;
+        transition: transform 0.3s ease-in-out;
+    }
+    
+    .offer-box h3 {
+        font-size: 24px; /* Bigger heading */
+        color: #007bff;
+        margin-bottom: 12px;
+    }
+    
+    .offer-box p {
+        font-size: 18px; /* Bigger text */
+        color: #555;
+        line-height: 1.6;
+    }
+    
+    .offer-box:hover {
+        transform: translateY(-5px);
+    }
+    
+    
+</style>
+
+<!-- Banner Section -->
+<div class="banner">
+    <div>
+        <h1 style="font-size: 100px; font-weight: bold;">Content Plagiarism Detector</h1>
+        <p style="font-size: 24px;">
+            Detect plagiarism in articles, essays, and reports using AI-based analysis.  
+            Input text manually or upload a document to check for duplicated content.
+        </p>
+    </div>
+</div>
+
+<!-- Text Input Section -->
+<div class="container">
+    <h2 style="font-size:40px; font-weight:bold;">Enter Content to Check for Plagiarism</h2>
+
+    <div class="input-box">
+        <textarea id="inputText" placeholder="Enter content here..."></textarea>
+        <div id="outputResult" placeholder="Plagiarism result will appear here..." readonly></div>
+    </div>
+
+    <button onclick="plagiarism()" class="check-btn">Check Plagiarism</button>
+</div>
+
+<!-- Spinner Element -->
+<div id="loadingSpinner" class="spinner">
+    <img src="{{ url_for('static', filename='spinner.gif') }}" alt="Loading...">
+</div>
+
+<section class="offer-section">
+    <h2 class="offer-heading">What We Offer</h2>
+    <div class="offer-container">
+        <div class="offer-box">
+            <h3>🔍 Advanced Plagiarism Detection</h3>
+            <p>Our AI-powered system detects exact and paraphrased matches with high accuracy.</p>
+        </div>
+        <div class="offer-box">
+            <h3>🌍 Web Content Matching</h3>
+            <p>We scan top-ranked web sources to compare your text with real-time online content.</p>
+        </div>
+        <div class="offer-box">
+            <h3>📊 Detailed Similarity Scores</h3>
+            <p>Get a percentage-based similarity score for every source to measure content originality.</p>
+        </div>
+        <div class="offer-box">
+            <h3>⚡ Fast & Secure Analysis</h3>
+            <p>Experience quick plagiarism detection while ensuring full data privacy and security.</p>
+        </div>
+        <div class="offer-box">
+            <h3>💡 Smart Key Sentence Extraction</h3>
+            <p>Our AI extracts the most important sentences to improve search accuracy and efficiency.</p>
+        </div>
+        <div class="offer-box">
+            <h3>📌 Top 3 Most Relevant Sources</h3>
+            <p>We provide the top 3 best-matched sources for easy verification and reference.</p>
+        </div>
+    </div>
+</section>
+
+
+
+<!-- File Upload Section
+<div class="container">
+    <h2 class="section-heading">Or Upload a File for Plagiarism Check</h2>
+
+    <div class="file-upload-container">
+        <input type="file" id="fileInput" class="file-input">
+        <button onclick="PlagiarismFile()" class="check-btn">Analyze & Download Report</button>
+    </div>
+</div>
+-->
+<script>
+    function showCustomAlert(message, type = "error") {
+        console.log("ALERT TRIGGERED:", message); // Debugging Log
+        
+        let alertBox = document.getElementById("custom-alert");
+        let alertMessage = document.getElementById("alert-message");
+
+        if (alertBox && alertMessage) {
+            alertMessage.textContent = message;
+            alertBox.classList.remove("hidden");
+
+            // Change color based on type
+            if (type === "success") {
+                alertBox.style.backgroundColor = "green";
+            } else {
+                alertBox.style.backgroundColor = "red";
+            }
+
+            // Auto-close after 3 seconds
+            setTimeout(() => closeAlert(), 3000);
+        } else {
+            console.error("Custom alert elements not found in base.html!");
+        }
+    }
+
+    function closeAlert() {
+        let alertBox = document.getElementById("custom-alert");
+        if (alertBox) {
+            alertBox.classList.add("hidden");
+        }
+    }
+
+    function showLoadingSpinner() {
+        document.getElementById("loadingSpinner").style.display = "block"; // Show spinner
+    }
+    
+    function hideLoadingSpinner() {
+        document.getElementById("loadingSpinner").style.display = "none"; // Hide spinner
+    }
+    
+
+    function plagiarism() {
+        console.log("Checking plagiarism...");
+
+        let text = document.getElementById("inputText").value.trim();
+
+        if (!text) {
+            showCustomAlert("Please enter content to check plagiarism.");
+            return;
+        }
+
+        showLoadingSpinner();
+
+        fetch("/plagiarism", {
+            method: "POST",
+            headers: { "Content-Type": "application/x-www-form-urlencoded" },
+            body: `text=${encodeURIComponent(text)}`
+        })
+        .then(response => {
+            console.log("Response received:", response);
+            if (!response.ok) throw new Error("Server error. Please try again.");
+            return response.json();
+        })
+        .then(data => {
+            console.log("Plagiarism data:", data);
+            hideLoadingSpinner();
+        
+            if (data.error) {
+                showCustomAlert(data.error);
+            } else {
+                let outputDiv = document.getElementById("outputResult");
+                outputDiv.innerHTML = ""; // Clear previous results
+        
+                if (data.length === 0) {
+                    outputDiv.innerHTML = "<p>No plagiarism detected.</p>";
+                } else {
+                    let table = `<table class="plagiarism-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Source URL</th>
+                                            <th>Similarity (%)</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>`;
+        
+                    data.forEach(item => {
+                        if (item.url && item.similarity !== undefined) { // Ensure data exists
+                            table += `<tr>
+                                        <td><a href="${item.url}" target="_blank">${item.url}</a></td>
+                                        <td>${item.similarity.toFixed(2)}%</td>
+                                      </tr>`;
+                        }
+                    });
+        
+                    table += `</tbody></table>`;
+                    outputDiv.innerHTML = table;
+                }
+        
+                showCustomAlert("Plagiarism check completed!", "success");
+            }
+        })
+        
+        
+        .catch(error => {
+            console.error("Error:", error);
+            hideLoadingSpinner();
+            showCustomAlert(error.message || "Plagiarism check failed! Please try again.");
+        });
+    }
+</script>
+
+{% endblock %}

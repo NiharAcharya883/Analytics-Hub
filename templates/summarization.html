@@ -1,0 +1,286 @@
+{% extends "base.html" %}
+
+{% block content %}
+<style>
+    .banner {
+        position: relative;
+        width: 100%;
+        height: 450px;
+        background: url("{{ url_for('static', filename='images/Text_Summarization_2.png') }}") no-repeat center center/cover;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        color: white;
+    }
+    .banner::before {
+        content: "";
+        position: absolute;
+        top: 0; left: 0; width: 100%; height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+    }
+    .banner h1, .banner p {
+        position: relative;
+        z-index: 1;
+    }
+    .container {
+        width: 80%;
+        margin: 40px auto;
+        text-align: center;
+    }
+    .summarization-box {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 20px;
+        gap: 20px;
+    }
+    textarea {
+        width: 48%;
+        height: 230px;
+        padding: 10px;
+        font-size: 16px;
+        border: 1px solid #ccc;
+        border-radius: 10px;
+        box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+    }
+    .summary {
+        background-color:#E0E0E0;
+    }
+    .summarize-btn {
+        padding: 12px 24px;
+        font-size: 18px;
+        font-weight: bold;
+        color: white;
+        background-color:#4169E1;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+    .summarize-btn:hover {
+        background-color: darkblue;
+    }
+    /* What We Offer Section */
+.offer-section {
+    text-align: center;
+    padding: 50px;
+    background-color: #f8f9fc;
+}
+
+.offer-section h2 {
+    font-size: 32px;
+    font-weight: bold;
+    margin-bottom: 30px;
+}
+
+.offer-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 40px; /* Spacing between boxes */
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.offer-box {
+    background: white;
+    padding: 30px; /* Increased padding */
+    border-radius: 12px;
+    box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease-in-out;
+}
+
+.offer-box:hover {
+    transform: translateY(-5px);
+}
+
+.offer-content h3 {
+    font-size: 22px; /* Increased heading size */
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+.offer-content ul {
+    list-style: none;
+    padding: 0;
+}
+
+.offer-content ul li {
+    font-size: 18px; /* Increased font size */
+    color: #333;
+    display: flex;
+    align-items: center;
+    margin-bottom: 12px; /* Increased spacing between list items */
+}
+
+.offer-content ul li::before {
+    content: "✔";
+    color: #007bff;
+    font-weight: bold;
+    font-size: 20px; /* Increased checkmark size */
+    margin-right: 12px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .offer-container {
+        grid-template-columns: 1fr; /* Single column on smaller screens */
+    }
+}
+
+</style>
+
+<!-- Banner Section -->
+<div class="banner">
+    <div>
+        <h1 style="font-size: 100px; font-weight: bold;">Text Summarization</h1>
+        <p style="font-size: 24px;">Automatically generate concise summaries from lengthy text. Upload documents or paste text to get AI-powered summaries.</p>
+    </div>
+</div>
+
+<!-- Text Input Section -->
+<div class="container">
+    <h2 style="font-size:40px; font-weight:bold;">Enter Text</h2>
+    <div class="summarization-box">
+        <textarea id="inputText" placeholder="Enter text here..."></textarea>
+        <textarea id="summaryText" class="summary" placeholder="Summarized text will appear here..." readonly></textarea>
+    </div>
+    <button onclick="summarizeText()" class="summarize-btn">Summarize</button>
+</div>
+
+<div class="container">
+    <h2 class="section-heading">Or Upload a File for Summarization</h2>
+    <input type="file" id="fileInput" class="file-input">
+    <button onclick="summarizeFile()" class="summarize-btn">Summarize & Download</button>
+</div>
+<section class="offer-section">
+    <h2>What we offer!</h2>
+    <div class="offer-container">
+        <div class="offer-box">
+            <div class="offer-content">
+                <h3>Abstractive Summarization</h3>
+                <ul>
+                    <li>Generates concise, high-quality summaries.</li>
+                    <li>Retains key points while rephrasing content.</li>
+                    <li>Works on long articles, reports, and documents.</li>
+                    <li>AI-powered contextual understanding.</li>
+                    <li>Enhances readability and comprehension.</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="offer-box">
+            <div class="offer-content">
+                <h3>Multiple File Formats</h3>
+                <ul>
+                    <li>Supports PDF and DOCX file uploads.</li>
+                    <li>Extracts text from scanned documents.</li>
+                    <li>Effortless drag & drop file upload.</li>
+                    <li>No loss of formatting after summarization.</li>
+                    <li>Secure and private document handling.</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="offer-box">
+            <div class="offer-content">
+                <h3>Custom Summary Length</h3>
+                <ul>
+                    <li>Summarize up to 25% of the original text.</li>
+                    <li>Adjustable summary length for flexibility.</li>
+                    <li>Handles both short and lengthy documents.</li>
+                    <li>Maintains logical sentence structure.</li>
+                    <li>Ensures completeness of summarized text.</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="offer-box">
+            <div class="offer-content">
+                <h3>High Accuracy & Speed</h3>
+                <ul>
+                    <li>Processes text and files in seconds.</li>
+                    <li>Uses an advanced AI summarization model.</li>
+                    <li>Preserves key information and context.</li>
+                    <li>Reduces lengthy documents into key insights.</li>
+                    <li>Optimized for professional and academic use.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<script>
+    // Function to summarize text input
+function summarizeText() {
+    let text = document.getElementById("inputText").value;
+    
+    if (!text) {
+        showAlert("Please enter text to summarize.");
+        return;
+    }
+
+    fetch("/summarize_text", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: `text=${encodeURIComponent(text)}`
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.error) {
+            showAlert(data.error);
+        } else {
+            document.getElementById("summaryText").value = data.summary;
+        }
+    })
+    .catch(error => {
+        console.error("Text Summarization Error:", error);
+        showAlert("Summarization failed! Please try again.");
+    });
+}
+
+// Function to summarize an uploaded file
+function summarizeFile() {
+    let fileInput = document.getElementById("fileInput");
+    
+    if (fileInput.files.length === 0) {
+        showAlert("Please upload a file to summarize.");
+        return;
+    }
+
+    let formData = new FormData();
+    formData.append("file", fileInput.files[0]);
+
+    fetch("/summarize_file", {
+        method: "POST",
+        body: formData
+    })
+    .then(response => {
+        if (!response.ok) {
+            return response.text().then(text => { throw new Error(text); });
+        }
+        return response.blob(); // Receiving a summary PDF
+    })
+    .then(blob => {
+        let downloadLink = document.createElement("a");
+        let url = URL.createObjectURL(blob);
+        downloadLink.href = url;
+        downloadLink.download = "summary.pdf";
+        document.body.appendChild(downloadLink);
+        downloadLink.click();
+        document.body.removeChild(downloadLink);
+        showAlert("Summary downloaded successfully!");
+    })
+    .catch(error => {
+        console.error("File Summarization Error:", error);
+        showAlert("Summarization failed! " + error.message);
+    });
+}
+
+// Function to show alert messages
+function showAlert(message) {
+    alert(message);
+}
+
+</script>
+{% endblock %}
