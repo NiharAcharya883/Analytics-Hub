@@ -1,0 +1,449 @@
+{% extends "base.html" %}
+
+{% block content %}
+<style>
+    .banner {
+        position: relative;
+        width: 100%;
+        height: 450px;
+        background: url("{{ url_for('static', filename='images/Language_Translator_2.jpg') }}") no-repeat center center/cover;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        color: white;
+    }
+    .banner::before {
+        content: "";
+        position: absolute;
+        top: 0; left: 0; width: 100%; height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+    }
+    .banner h1, .banner p {
+        position: relative;
+        z-index: 1;
+    }
+    .container {
+        width: 80%;
+        margin: 40px auto;
+        text-align: center;
+    }
+    
+    .translation-box {
+        display: flex;
+        justify-content: space-between;
+        gap: 20px;
+        margin-bottom: 20px;
+        position: relative;
+    }
+    
+    .input-wrapper {
+        position: relative;
+        width: 48%;
+    }
+    
+    textarea {
+        width: 100%;
+        height: 230px;
+        padding: 10px;
+        font-size: 16px;
+        border: 1px solid #ccc;
+        border-radius: 10px;
+        box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+        resize: none;
+    }
+    
+    #charCount {
+        position: absolute;
+        bottom: 10px;
+        right: 1px;
+        font-size: 13px;
+        color: gray;
+        background: white;
+        padding: 2px 6px;
+        border-radius: 5px;
+    }
+    
+    .translated {
+        background-color: #E0E0E0;
+        width: 48%;
+    }
+    
+    .language-select-container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 15px;
+        margin-top: 15px;
+    }
+    
+    .language-label {
+        font-size: 20px;
+        font-weight: bold;
+    }
+    
+    .dropdown {
+        padding: 10px;
+        font-size: 18px;
+        border-radius: 8px;
+        border: 1px solid #ccc;
+    }
+    
+    .translate-btn {
+        padding: 12px 24px;
+        font-size: 18px;
+        font-weight: bold;
+        color: white;
+        background-color: #4169E1;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+    
+    .translate-btn:hover {
+        background-color: #314a9c;
+    }
+    
+.section-heading {
+    font-size: 42px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+.file-upload-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 20px;
+}
+.file-input {
+    padding: 12px;
+    font-size: 18px;
+    border: 2px dashed #aaa;
+    border-radius: 10px;
+    width: 50%;
+    text-align: center;
+    cursor: pointer;
+}
+.file-options {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+.file-label {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.offer-section {
+    text-align: center;
+    padding: 50px;
+    background-color: #f8f9fc;
+}
+
+.offer-section h2 {
+    font-size: 32px;
+    font-weight: bold;
+    margin-bottom: 30px;
+}
+
+.offer-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 40px; /* Increased spacing between boxes */
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.offer-box {
+    background: white;
+    padding: 30px; /* Increased padding */
+    border-radius: 12px;
+    box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease-in-out;
+}
+
+.offer-box:hover {
+    transform: translateY(-5px);
+}
+
+.offer-content h3 {
+    font-size: 22px; /* Increased heading size */
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+.offer-content ul {
+    list-style: none;
+    padding: 0;
+}
+
+.offer-content ul li {
+    font-size: 18px; /* Increased font size */
+    color: #333;
+    display: flex;
+    align-items: center;
+    margin-bottom: 12px; /* Increased spacing between list items */
+}
+
+.offer-content ul li::before {
+    content: "✔";
+    color: #007bff;
+    font-weight: bold;
+    font-size: 20px; /* Increased checkmark size */
+    margin-right: 12px;
+}
+.audio-container {
+    margin-top: 15px;
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+}
+
+.audio-btn {
+    background: #007bff;
+    color: white;
+    font-size: 16px;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background 0.3s;
+}
+
+.audio-btn:hover {
+    background: #0056b3;
+}
+
+
+</style>
+
+<!-- Banner Section -->
+<div class="banner">
+    <div>
+        <h1 style="font-size: 100px; font-weight: bold;">Language Translator</h1>
+        <p style="font-size: 24px;">Instantly translate text and files using Google Translate API. It Supports multiple file formats including PDFs, DOCX, and images. Get accurate translations with a seamless user experience.</p>
+    </div>
+</div>
+
+<!-- Text Input Section -->
+<div class="container">
+    <h1 style="font-size: 38px; font-weight: bold;">Enter Text</h1> <!-- Heading Added -->
+
+    <div class="translation-box">
+        <div class="input-wrapper">
+            <textarea id="inputText" placeholder="Enter text here..." oninput="updateCharacterCount()"></textarea>
+            <span id="charCount">15000</span> <!-- Character Counter -->
+        </div>
+
+        <textarea id="translatedText" class="translated" placeholder="Translated text will appear here..." readonly></textarea>
+    </div>
+
+    <div class="audio-container">
+        <button id="listenBtn" class="audio-btn" style="display: none;" onclick="playAudio()">🎧 Listen to Audio</button>
+        <a id="downloadAudioBtn" class="audio-btn" style="display: none;" download>⬇️ Download Audio</a>
+    </div>
+
+    <div class="language-select-container">
+        <label for="languageSelect" class="language-label">Select a Language:</label>
+        <select id="languageSelect" class="dropdown">
+            {% for code, lang in languages.items() %}
+            <option value="{{ code }}" {% if lang == 'english' %}selected{% endif %}>{{ lang.title() }}</option>
+            {% endfor %}
+        </select>
+
+        <button onclick="translateText()" class="translate-btn">Translate</button>
+    </div>
+</div>
+
+
+<div class="container">
+    <h2 class="section-heading">Or Upload a File to Translate</h2>
+
+    <div class="file-upload-container">
+        <input type="file" id="fileInput" class="file-input">
+        
+        <div class="file-options">
+            <label for="fileLanguageSelect" class="file-label">Select a Language:</label>
+            <select id="fileLanguageSelect" class="dropdown">
+                {% for code, lang in languages.items() %}
+                <option value="{{ code }}" {% if lang == 'english' %}selected{% endif %}>{{ lang.title() }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <button onclick="translateFile()" class="translate-btn">Translate & Download</button>
+    </div>
+</div>
+<section class="offer-section">
+    <h2>What we offer!</h2>
+    <div class="offer-container">
+        <div class="offer-box">
+            <div class="offer-content">
+                <h3>Supports Multiple Languages</h3>
+                <ul>
+                    <li>Translate text into 107 different languages.</li>
+                    <li>Accurate AI-powered translations.</li>
+                    <li>Supports both plain text and structured content.</li>
+                    <li>Automatic language detection.</li>
+                    <li>Fast and efficient processing.</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="offer-box">
+            <div class="offer-content">
+                <h3>Multiple File Formats</h3>
+                <ul>
+                    <li>Upload PDF, DOCX, HTML, and JPG files.</li>
+                    <li>Extracts text from scanned images and documents.</li>
+                    <li>Easy drag & drop file upload.</li>
+                    <li>No formatting loss during translation.</li>
+                    <li>Secure and private document handling.</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="offer-box">
+            <div class="offer-content">
+                <h3>Character Limit</h3>
+                <ul>
+                    <li>Translate up to 15,000 characters at a time.</li>
+                    <li>Ideal for long documents and reports.</li>
+                    <li>Efficiently processes bulk text translations.</li>
+                    <li>Handles complex language structures.</li>
+                    <li>Optimized for professional use cases.</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="offer-box">
+            <div class="offer-content">
+                <h3>High Accuracy & Speed</h3>
+                <ul>
+                    <li>Delivers translations in seconds.</li>
+                    <li>Maintains context and tone of the text.</li>
+                    <li>AI-powered linguistic accuracy.</li>
+                    <li>Preserves industry-specific terminology.</li>
+                    <li>Seamless integration with workflows.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+<script>
+    function updateCharacterCount() {
+        let maxLength = 15000;
+        let inputText = document.getElementById("inputText");
+        let charCount = document.getElementById("charCount");
+    
+        let remaining = maxLength - inputText.value.length;
+        charCount.textContent = remaining; // Update character count
+    }
+    
+    function updateCharCount() {
+        let inputText = document.getElementById("inputText");
+        let charCount = document.getElementById("charCount");
+    
+        // Calculate remaining characters
+        let remaining = 15000 - inputText.value.length;
+    
+        // Update the counter display
+        charCount.textContent = remaining;
+    }
+    
+    function showAlert(message) {
+        let alertBox = document.getElementById("custom-alert"); // Assuming you have an alert box in base.html
+        if (alertBox) {
+            alertBox.innerHTML = message;
+            alertBox.style.display = "block"; // Show alert box
+        }
+    }
+    
+    function translateText() {
+        let text = document.getElementById("inputText").value;
+        let language = document.getElementById("languageSelect").value;
+    
+        if (!text) {
+            showAlert("Please enter text to translate");
+            return;
+        }
+    
+        if (text.length > 15000) {
+            showAlert("Character limit exceeded (Max: 15,000)");
+            return;
+        }
+    
+        fetch("/translate", {
+            method: "POST",
+            headers: { "Content-Type": "application/x-www-form-urlencoded" },
+            body: `text=${encodeURIComponent(text)}&language=${encodeURIComponent(language)}`
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.error) {
+                showAlert(data.error);
+            } else {
+                document.getElementById("translatedText").value = data.translated_text;
+                
+                // Set audio button links
+                document.getElementById("listenBtn").style.display = "inline-block";
+                document.getElementById("downloadAudioBtn").style.display = "inline-block";
+                document.getElementById("downloadAudioBtn").href = data.audio_url;
+                document.getElementById("downloadAudioBtn").setAttribute("download", "translated_audio.mp3");
+    
+                // Set audio source for playback
+                window.audioSrc = data.audio_url;
+            }
+        })
+        .catch(error => {
+            console.error("Translation Error:", error);
+            showAlert("Translation failed! Please try again.");
+        });
+    }
+    
+    function playAudio() {
+        if (window.audioSrc) {
+            let audio = new Audio(window.audioSrc);
+            audio.play();
+        } else {
+            showAlert("No audio available. Please translate text first.");
+        }
+    }
+    
+    function translateFile() {
+        let fileInput = document.getElementById("fileInput");
+        let file = fileInput.files[0];
+        let language = document.getElementById("fileLanguageSelect").value;
+    
+        if (!file) {
+            showAlert("Please upload a file to translate");
+            return;
+        }
+    
+        let formData = new FormData();
+        formData.append("file", file);
+        formData.append("language", language);
+    
+        fetch("/translate_file", { method: "POST", body: formData })
+        .then(response => response.json())
+        .then(data => {
+            if (data.error) {
+                showAlert(data.error);
+            } else {
+                window.location.href = data.download_url;
+            }
+        })
+        .catch(error => {
+            console.error("File Translation Error:", error);
+            showAlert("File translation failed! Please try again.");
+        });
+    }
+    
+</script>
+{% endblock %}

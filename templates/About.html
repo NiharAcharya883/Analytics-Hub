@@ -1,0 +1,222 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<style>
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    color: #333;
+  }
+  .about-container {
+    max-width: 1200px;
+    margin: auto;
+    padding: 60px 20px;
+  }
+
+  h1, h2, h3, h4 {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 2.2em;
+    color: #1e3c72;
+  }
+
+  h1.hero-title {
+    font-size: 3.2em;
+    margin-bottom: 15px;
+    color: #E0EFFF; /* updated */
+  }
+
+  .hero {
+    background: linear-gradient(135deg, #1e3c72, #2a5298);
+    padding: 100px 20px;
+    text-align: center;
+  }
+  .hero p {
+    font-size: 1.3em;
+    color: #f0f8ff; /* updated to soft pale blue */
+    max-width: 900px;
+    margin: auto;
+  }
+
+  p {
+    font-size: 1.1em;
+    line-height: 1.7;
+    max-width: 900px;
+    margin: 0 auto 40px;
+  }
+
+  .tools {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 30px;
+    margin-bottom: 60px;
+  }
+
+  .tool-card {
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 30px;
+    width: 260px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+    text-align: center;
+    transition: transform 0.3s ease;
+  }
+  .tool-card:hover {
+    transform: translateY(-10px);
+  }
+
+  .tool-icon {
+    font-size: 50px;
+    margin-bottom: 15px;
+    color: #2a5298;
+  }
+
+  .tool-card h3 {
+    font-size: 1.4em;
+    margin-bottom: 10px;
+    color: #2a5298;
+  }
+
+  .tool-card p {
+    font-size: 0.95em;
+  }
+
+  .timeline {
+    position: relative;
+    margin: 60px auto;
+    padding-left: 40px;
+    max-width: 900px;
+  }
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 20px;
+    top: 0;
+    bottom: 0;
+    width: 4px;
+    background: #2a5298;
+  }
+  .timeline-event {
+    position: relative;
+    margin-bottom: 40px;
+    padding-left: 40px;
+  }
+  .timeline-event::before {
+    content: '';
+    position: absolute;
+    left: -12px;
+    top: 5px;
+    width: 20px;
+    height: 20px;
+    background: #fff;
+    border: 4px solid #2a5298;
+    border-radius: 50%;
+  }
+  .timeline-event h4 {
+    font-size: 1.2em;
+    color: #2a5298;
+    margin-bottom: 8px;
+  }
+
+  .cta {
+    background: #2a5298;
+    padding: 60px 20px;
+    text-align: center;
+  }
+  .cta h2 {
+    font-size: 2em;
+    margin-bottom: 20px;
+    color: #E0EFFF; /* updated */
+  }
+  .cta a {
+    background: white;
+    color: #2a5298;
+    padding: 14px 30px;
+    font-weight: bold;
+    border-radius: 30px;
+    text-decoration: none;
+    transition: background 0.3s;
+  }
+  .cta a:hover {
+    background: #e0e0e0;
+  }
+
+  @media (max-width: 768px) {
+    .tools {
+      flex-direction: column;
+      align-items: center;
+    }
+  }
+</style>
+
+<div class="hero">
+  <h1 class="hero-title">Empowering Insights Through Intelligent Analytics</h1>
+  <p>Turning raw text into actionable knowledge — one tool at a time.</p>
+</div>
+
+<div class="about-container">
+  <h2>Our Mission</h2>
+  <p>
+    At Analytics Hub, our mission is to revolutionize how people interact with data by simplifying complex natural language processes.
+    We are passionate about creating intuitive tools that empower users — from students to enterprises — to uncover insights, verify truth,
+    protect originality, and communicate beyond boundaries. Our goal is to bridge the gap between human language and machine understanding
+    to make data-driven decision-making accessible and impactful.
+  </p>
+
+  <h2>Our Tools</h2>
+  <div class="tools">
+    <div class="tool-card">
+      <div class="tool-icon">🕵️‍♂️</div>
+      <h3>Fake News Detection</h3>
+      <p>Combat misinformation with advanced AI that analyzes text credibility and flags unreliable sources.</p>
+    </div>
+    <div class="tool-card">
+      <div class="tool-icon">📝</div>
+      <h3>Plagiarism Checker</h3>
+      <p>Protect your original work by identifying duplicate content with real-time scanning across the web.</p>
+    </div>
+    <div class="tool-card">
+      <div class="tool-icon">😊</div>
+      <h3>Sentiment Analyzer</h3>
+      <p>Understand emotional tone and audience sentiment behind reviews, comments, and social posts.</p>
+    </div>
+    <div class="tool-card">
+      <div class="tool-icon">🌐</div>
+      <h3>Language Translator</h3>
+      <p>Break language barriers instantly with accurate multi-language translation capabilities.</p>
+    </div>
+    <div class="tool-card">
+      <div class="tool-icon">🔍</div>
+      <h3>Text Summarizer</h3>
+      <p>Save time by condensing long documents into short, coherent summaries using AI-powered algorithms.</p>
+    </div>
+  </div>
+
+  <h2>Our Journey in 2025</h2>
+  <div class="timeline">
+    <div class="timeline-event">
+      <h4>January 2025</h4>
+      <p>We began our journey with a vision to simplify NLP for everyone. Brainstormed core ideas, finalized product roadmap, and built a small but powerful team.</p>
+    </div>
+    <div class="timeline-event">
+      <h4>February 2025</h4>
+      <p>Development kicked off with rigorous model testing for fake news and plagiarism detection. Built our initial platform architecture and core API services.</p>
+    </div>
+    <div class="timeline-event">
+      <h4>March 2025</h4>
+      <p>Launched beta versions of all five tools. Started getting feedback from a community of early adopters and researchers worldwide.</p>
+    </div>
+    <div class="timeline-event">
+      <h4>April 2025</h4>
+      <p>Official release of Analytics Hub v1.0. Tools now live with a refined UI, scalability, and real-world applications across education, journalism, and enterprise domains.</p>
+    </div>
+  </div>
+</div>
+
+<div class="cta">
+  <h2>Ready to explore the power of analytics?</h2>
+  <a href="{{ url_for('home') }}">Join the Hub Today</a>
+</div>
+{% endblock %}

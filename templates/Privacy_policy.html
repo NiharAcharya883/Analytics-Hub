@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<!-- MAIN PRIVACY CARD -->
+<section style="max-width: 1000px; margin: 60px auto; padding: 40px; background: linear-gradient(to right, #f9f9f9, #ffffff); border-radius: 16px; box-shadow: 0 8px 30px rgba(0,0,0,0.1);">
+  <h1 style="font-size: 2.5rem; font-weight: bold; color: #2a5298; margin-bottom: 20px;">Privacy Policy</h1>
+  
+  <p style="font-size: 1.1rem; color: #333; margin-bottom: 25px;">
+    At <strong>Analytics Hub</strong>, your privacy is not just respected — it's protected. This Privacy Policy outlines how we collect, use, and safeguard the personal information you provide while using our tools.
+  </p>
+
+  <h2 style="font-size: 1.7rem; color: #2a5298; margin-top: 40px;">1. Information We Collect</h2>
+  <ul style="line-height: 1.8; font-size: 1rem; color: #555; padding-left: 20px;">
+    <li><strong>Email Address:</strong> Required to provide feedback and stay connected.</li>
+    <li><strong>Phone Number:</strong> Used for feedback identification and support purposes.</li>
+    <li><strong>Feedback Message:</strong> Helps us improve our services.</li>
+    <li><strong>Text Inputs:</strong> Data submitted to our tools (e.g., fake news detection, summarization, etc.) is temporarily processed and not stored permanently.</li>
+  </ul>
+
+  <h2 style="font-size: 1.7rem; color: #2a5298; margin-top: 40px;">2. How We Use Your Data</h2>
+  <p style="font-size: 1rem; color: #555;">
+    The information collected is solely used to:
+  </p>
+  <ul style="line-height: 1.8; font-size: 1rem; color: #555; padding-left: 20px;">
+    <li>Improve tool performance and accuracy</li>
+    <li>Respond to your feedback</li>
+    <li>Monitor website usage for better user experience</li>
+  </ul>
+
+  <h2 style="font-size: 1.7rem; color: #2a5298; margin-top: 40px;">3. Data Security</h2>
+  <p style="font-size: 1rem; color: #555;">
+    We implement industry-standard security measures to protect your data against unauthorized access, alteration, or disclosure. Feedback data is stored securely in our local database and not shared with third parties.
+  </p>
+
+  <h2 style="font-size: 1.7rem; color: #2a5298; margin-top: 40px;">4. Your Consent</h2>
+  <p style="font-size: 1rem; color: #555;">
+    By using our website, you consent to the collection and use of your information as outlined in this policy.
+  </p>
+
+  <h2 style="font-size: 1.7rem; color: #2a5298; margin-top: 40px;">5. Changes to This Policy</h2>
+  <p style="font-size: 1rem; color: #555;">
+    We may update this policy as we expand our services. Any major changes will be communicated on this page.
+  </p>
+</section>
+
+<!-- SEPARATE CONTACT SECTION -->
+<section style="background: linear-gradient(to right, #2a5298, #1e3c72); color: white; padding: 50px 20px; text-align: center; margin-top: 40px;">
+  <h2 style="font-size: 2rem; font-weight: bold; margin-bottom: 15px;">Have Questions or Concerns?</h2>
+  <p style="font-size: 1.1rem; margin-bottom: 30px; max-width: 800px; margin-left: auto; margin-right: auto;">
+    If you have any questions about our Privacy Policy, your data, or how we handle information — we’re here to help. We value transparency and user trust above all.
+  </p>
+  <a href="{{ url_for('contact') }}" style="background-color: #fff; color: #2a5298; padding: 14px 30px; border-radius: 30px; font-size: 1rem; font-weight: bold; text-decoration: none; transition: 0.3s;">
+    Contact Us
+  </a>
+</section>
+{% endblock %}

@@ -1,0 +1,296 @@
+{% extends "base.html" %}
+
+{% block content %}
+<style>
+    /* News Detection Section */
+    .banner {
+        position: relative;
+        width: 100%;
+        height: 450px;
+        background: url("{{ url_for('static', filename='images/FakeNews.jpg') }}") no-repeat center center/cover;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        color: white;
+    }
+    .banner::before {
+        content: "";
+        position: absolute;
+        top: 0; left: 0; width: 100%; height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+    }
+    .banner h1, .banner p {
+        position: relative;
+        z-index: 1;
+    }
+.news-section {
+    text-align: center;
+    padding: 50px 20px;
+    background: #f4f4f4;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 60%;
+    margin: 50px auto;
+}
+
+.news-section h2 {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.news-section textarea {
+    width: 100%;
+    height: 200px;
+    border: 0.5px solid black;
+    border-radius: 15px;
+    padding: 10px;
+    font-size: 1rem;
+    outline: none;
+    resize: none;
+}
+
+.news-section button {
+    background: #8B4513;
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    font-size: 1.3rem;
+    cursor: pointer;
+    margin-top: 20px;
+    border-radius: 6px;
+    transition: background 0.3s;
+}
+
+.news-section button:hover {
+    background: #5D2E0F;
+}
+
+#resultText {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #222;
+    margin-top: 20px;
+}
+
+/* Alert Box */
+.alert-box {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(0, 0, 0, 0.9);
+    color: white;
+    padding: 20px 30px;
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0px 0px 15px rgba(255, 255, 255, 0.2);
+    min-width: 300px;
+    max-width: 400px;
+    z-index: 1000;
+}
+
+.alert-box button {
+    background: #ff4757;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    margin-top: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: 0.3s ease-in-out;
+}
+
+.alert-box button:hover {
+    background: #e84118;
+}
+.offer-section {
+    padding: 50px 0;
+    background-color: #f0f5f9;
+    text-align: center;
+}
+
+.offer-section h2 {
+    font-size: 36px;
+    font-weight: 600;
+    margin-bottom: 40px;
+    color: #2b3d4f;
+}
+
+.offer-container {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 30px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.offer-box {
+    background-color: #ffffff;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease;
+}
+
+.offer-box:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+}
+
+.offer-box h3 {
+    font-size: 22px;
+    font-weight: 600;
+    margin-bottom: 15px;
+    color: #0056b3;
+}
+
+.offer-box ul {
+    list-style: none;
+    padding: 0;
+    font-size: 16px;
+    color: #555;
+}
+
+.offer-box ul li {
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+}
+
+.offer-box ul li::before {
+    content: "✔";
+    color: #28a745;
+    font-size: 18px;
+    margin-right: 10px;
+}
+
+.disclaimer {
+    font-size: 16px;
+    color: #6c757d;
+    font-style: italic;
+    margin-top: 30px;
+    background-color: #e9ecef;
+    padding: 15px;
+    border-radius: 8px;
+    width: 70%;
+    margin: 30px auto;
+    text-align: center;
+}
+
+</style>
+<!-- Banner Section -->
+<div class="banner">
+    <div>
+        <h1 style="font-size: 100px; font-weight: bold;">Fake News Detection</h1>
+        <p style="font-size: 24px;width:90%;margin:auto;">Ensure the credibility of news articles with our advanced AI-powered Fake News Detection tool, designed to help you distinguish between real and fake news with high accuracy.</p>
+    </div>
+</div>
+<section class="news-section">
+    <h2>Enter News</h2>
+    <textarea id="newsInput" placeholder="Type or paste the news article here..."></textarea>
+    <button onclick="checkNews()">Check News</button>
+    <p id="resultText"></p>
+</section>
+
+<!-- Alert Box -->
+<div id="customAlert" class="alert-box">
+    <p id="alertMessage"></p>
+    <button onclick="closeAlert()">OK</button>
+</div>
+<section class="offer-section">
+    <h2>What We Offer!</h2>
+    <div class="offer-container">
+        <div class="offer-box">
+            <div class="offer-content">
+                <h3>Instant News Verification</h3>
+                <ul>
+                    <li>Simply paste any news article text to verify authenticity.</li>
+                    <li>Real-time prediction results using AI-powered detection.</li>
+                    <li>Handles both short headlines and long-form articles.</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="offer-box">
+            <div class="offer-content">
+                <h3>High Accuracy Model</h3>
+                <ul>
+                    <li>Achieves over 96% accuracy on the test dataset.</li>
+                    <li>Trained on 90,000+ news articles classified as Fake or Real.</li>
+                    <li>Balanced and optimized to reduce bias and improve trust.</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="offer-box">
+            <div class="offer-content">
+                <h3>Lightweight and Fast</h3>
+                <ul>
+                    <li>Results delivered within seconds of submission.</li>
+                    <li>Minimal processing load ensures quick response time.</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="offer-box">
+            <div class="offer-content">
+                <h3>Easy and User-Friendly Interface</h3>
+                <ul>
+                    <li>Simple and intuitive input form for users.</li>
+                    <li>No signup or login required to test news articles.</li>
+                    <li>Designed for journalists, researchers, and everyday readers.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="disclaimer">
+        <strong>Disclaimer:</strong> Our Fake News Detector model is trained on datasets collected before 2020. Please be cautious when using it for newer types of news content or evolving misinformation patterns.
+    </div>
+</section>
+
+
+
+<script>
+function showAlert(message) {
+    document.getElementById("alertMessage").innerText = message;
+    document.getElementById("customAlert").style.display = "block";
+}
+
+function closeAlert() {
+    document.getElementById("customAlert").style.display = "none";
+}
+
+function checkNews() {
+    let newsText = document.getElementById("newsInput").value.trim();
+
+    if (!newsText) {
+        showAlert("Please enter News to check.");
+        return;
+    }
+
+    fetch("/fake-news", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: "news_text=" + encodeURIComponent(newsText)
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.error) {
+            showAlert(data.error);
+        } else {
+            document.getElementById("resultText").innerText = "This is " + data.result;
+        }
+    })
+    .catch(error => {
+        showAlert("Error checking news. Please try again.");
+    });
+}
+</script>
+
+{% endblock %}

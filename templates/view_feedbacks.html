@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div style="max-width: 900px; margin: 40px auto; padding: 20px;">
+  <h2 style="text-align: center; color: #2a5298;">User Feedback Submissions</h2>
+  <table style="width: 100%; border-collapse: collapse; margin-top: 20px;">
+    <thead style="background: #2a5298; color: white;">
+      <tr>
+        <th style="padding: 10px;">ID</th>
+        <th style="padding: 10px;">Email</th>
+        <th style="padding: 10px;">Phone</th>
+        <th style="padding: 10px;">Feedback</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for feedback in feedbacks %}
+      <tr style="border-bottom: 1px solid #ddd;">
+        <td style="padding: 10px;">{{ feedback[0] }}</td>
+        <td style="padding: 10px;">{{ feedback[1] }}</td>
+        <td style="padding: 10px;">{{ feedback[2] }}</td>
+        <td style="padding: 10px;">{{ feedback[3] }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}
